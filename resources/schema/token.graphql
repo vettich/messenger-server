@@ -1,0 +1,8 @@
+type Token {
+	id: ID!
+	value: String!
+	userId: ID!
+	user: User
+	active: Boolean!
+	createdAt: Time!
+}

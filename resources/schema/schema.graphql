@@ -1,0 +1,47 @@
+schema {
+	query: Query
+	mutation: Mutation
+	subscription: Subscription
+}
+
+"Queries"
+type Query {
+	"Get user by token"
+	user: User
+
+	"Get user by username"
+	userByUsername(username: String!): User
+
+	"Get user's chat list"
+	chats: [Chat]
+
+	"Get chat's messages"
+	messages(chatId: String!): [Message]
+}
+
+"Mutations"
+type Mutation {
+	"Login user, returns token"
+	login(username: String!, password: String!): Token
+
+	"Registration of user"
+	signup(username: String!, password: String!): Token
+
+	"Set new user password. Must be set user token"
+	changeUserPassword(old: String!, new: String!): Boolean!
+
+	"Create new personal chat (for only 2 members) for user"
+	createPersonalChat(username: String!): Chat
+
+	"Create new message in chat"
+	createMessage(input: MessageInput!): Message
+}
+
+"Subscriptions"
+type Subscription {
+	"Watch user's chat list changes"
+	watchChatList(token: String!): Chat
+
+	"Watch new messages in chat"
+	watchNewMessagesInChat(token: String!, chatId: String!): Message
+}

@@ -1,0 +1,8 @@
+{
+	"port": 5008,
+	"mode": "development",
+	"db": {
+		"uri": "<rethinkdb_uri>",
+		"name": "test"
+	}
+}

@@ -1,0 +1,13 @@
+"A user is a structure that stores information about the user of the system"
+type User {
+	"A unique identifier of user"
+	id: ID!
+
+	"An username of user"
+	username: String!
+
+	"User registration date"
+	createdAt: Time!
+
+	chats: [Chat]
+}
