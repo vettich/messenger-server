@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"messenger/appconfig"
+	"messenger/graphqlws"
 	"messenger/handlers"
 	"messenger/models"
 	"messenger/resolvers"
@@ -15,7 +16,6 @@ import (
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/graph-gophers/graphql-go"
-	"github.com/graph-gophers/graphql-transport-ws/graphqlws"
 	r "gopkg.in/rethinkdb/rethinkdb-go.v6"
 )
 
