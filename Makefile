@@ -1,7 +1,7 @@
 run: gen
 	go run server.go
 
-build:
+build: gen
 	go build -o bin/server server.go
 
 gen:
