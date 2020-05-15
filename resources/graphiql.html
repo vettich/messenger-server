@@ -96,8 +96,20 @@
 				});
 			}
 
-			var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient('ws://' + location.host + '/graphql', { reconnect: true });
-			var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
+			var wsHost;
+			if (location.protocol !== 'https:') {
+				wsHost = 'ws://' + location.host + '/graphql';
+			} else {
+				wsHost = 'wss://' + location.host + '/graphql';
+			}
+			var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(
+				wsHost,
+				{ reconnect: true }
+			);
+			var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(
+				subscriptionsClient,
+				graphQLFetcher
+			);
 
 			ReactDOM.render(
 				React.createElement(GraphiQL, {fetcher: subscriptionsFetcher}),
