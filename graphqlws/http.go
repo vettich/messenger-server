@@ -3,7 +3,6 @@ package graphqlws
 import (
 	"net/http"
 
-	"github.com/eviot/log"
 	"github.com/gorilla/websocket"
 )
 
@@ -19,7 +18,6 @@ func NewHandlerFunc(svc GraphQLService, httpHandler http.Handler) http.HandlerFu
 	return func(w http.ResponseWriter, r *http.Request) {
 		for _, subprotocol := range websocket.Subprotocols(r) {
 			if subprotocol == "graphql-ws" {
-				log.Info("graphqlws")
 				ws, err := upgrader.Upgrade(w, r, nil)
 				if err != nil {
 					return

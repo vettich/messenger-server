@@ -6,8 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"time"
-
-	"github.com/eviot/log"
 )
 
 type operationMessageType string
@@ -155,7 +153,6 @@ func (conn *connection) readLoop(ctx context.Context, send sendFunc) {
 	for {
 		var msg operationMessage
 		err := conn.ws.ReadJSON(&msg)
-		log.Infof("%#v", msg)
 		if err != nil {
 			return
 		}
