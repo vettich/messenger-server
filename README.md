@@ -9,3 +9,9 @@
 ```sh
 $ make
 ```
+
+## Роутинги
+
+- `/graphql` - endpoint для запросов
+- `/` - GraphiQL - простой playground
+- `/play` - Playground - более симпатичный playground (но не работают подписки)
