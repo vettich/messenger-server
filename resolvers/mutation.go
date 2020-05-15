@@ -106,7 +106,7 @@ func (r *RootResolver) CreatePersonalChat(
 		return nil, errors.New("fail create chat")
 	}
 
-	return &ChatResolver{r, chat}, nil
+	return &ChatResolver{r, chat, nil}, nil
 }
 
 func (r *RootResolver) CreateMessage(

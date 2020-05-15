@@ -107,7 +107,7 @@ func ListChats(s *r.Session, userID string) ([]*Chat, error) {
 }
 
 func WatchChatList(s *r.Session, userID string, cancel chan bool) (chan *Chat, error) {
-	cur, err := r.Table(Chats).Filter(r.Row.Field("user_id").Contains(userID)).Changes().Run(s)
+	cur, err := r.Table(Chats).Filter(r.Row.Field("user_ids").Contains(userID)).Changes().Run(s)
 	if err != nil {
 		return nil, err
 	}

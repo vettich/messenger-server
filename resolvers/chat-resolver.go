@@ -9,7 +9,8 @@ import (
 
 type ChatResolver struct {
 	*RootResolver
-	chat *models.Chat
+	chat  *models.Chat
+	token *models.Token
 }
 
 func (self *ChatResolver) ID() graphql.ID {
@@ -25,9 +26,12 @@ func (self *ChatResolver) Name(ctx context.Context) string {
 	}
 
 	if self.chat.IsPersonal {
-		token, ok := ctx.Value("token").(*models.Token)
-		if !ok {
-			return ""
+		token := self.token
+		if self.token == nil {
+			var ok bool
+			if token, ok = ctx.Value("token").(*models.Token); !ok {
+				return ""
+			}
 		}
 
 		self.chat.SetSession(self.session)

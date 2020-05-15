@@ -3,9 +3,8 @@ package resolvers
 import (
 	"context"
 	"errors"
-	"messenger/models"
 
-	"github.com/eviot/log"
+	"messenger/models"
 )
 
 func (r *RootResolver) WatchChatList(
@@ -15,7 +14,7 @@ func (r *RootResolver) WatchChatList(
 	},
 ) (chan *ChatResolver, error) {
 	token, err := models.GetTokenByValue(r.session, args.Token)
-	if log.Debug(err) {
+	if err != nil {
 		return nil, errors.New("token not found")
 	}
 
@@ -41,11 +40,14 @@ func (r *RootResolver) WatchChatList(
 
 	c := make(chan *ChatResolver)
 	go func() {
-		done := false
-		for !done {
+		defer close(chatCancel)
+		defer close(msgCancel)
+		defer close(c)
+
+		for {
 			select {
 			case chat := <-chatChan:
-				c <- &ChatResolver{r, chat}
+				c <- &ChatResolver{r, chat, token}
 				chatIDs = append(chatIDs, chat.ID)
 				msgCancel <- true
 				msgChan, _ = models.WatchNewMessages(r.session, chatIDs, msgCancel)
@@ -53,18 +55,15 @@ func (r *RootResolver) WatchChatList(
 			case msg := <-msgChan:
 				chat, err := models.GetChat(r.session, msg.ChatID)
 				if err == nil {
-					c <- &ChatResolver{r, chat}
+					c <- &ChatResolver{r, chat, token}
 				}
 
 			case <-ctx.Done():
 				chatCancel <- true
 				msgCancel <- true
-				done = true
+				return
 			}
 		}
-		close(chatCancel)
-		close(msgCancel)
-		close(c)
 	}()
 
 	return c, nil
@@ -78,7 +77,7 @@ func (r *RootResolver) WatchNewMessagesInChat(
 	},
 ) (chan *MessageResolver, error) {
 	_, err := models.GetTokenByValue(r.session, args.Token)
-	if log.Debug(err) {
+	if err != nil {
 		return nil, errors.New("token not found")
 	}
 

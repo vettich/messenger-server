@@ -49,7 +49,7 @@ func (r *RootResolver) Chats(ctx context.Context) (*[]*ChatResolver, error) {
 	}
 	resolvers := make([]*ChatResolver, len(chats))
 	for i, chat := range chats {
-		resolvers[i] = &ChatResolver{r, chat}
+		resolvers[i] = &ChatResolver{r, chat, nil}
 	}
 	return &resolvers, nil
 }
